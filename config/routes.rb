@@ -3,7 +3,13 @@ Followmap::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'searches#index'
+  resources :searches do
+    collection do
+      get 'users'
+      get 'coordinates'
+    end
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
