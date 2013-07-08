@@ -3,3 +3,14 @@
   =label_tag '@',nil
   =text_field_tag 'search',nil,id:'search_field'
   =button_tag 'Search', id:"search_submit"
+%div#messages
+  %p#main_message
+  %p#user_location
+  %p#optional_message
+%div#legend
+  %p
+    White circles are users who follow you and you follow back
+  %p
+    Dark blue circles are users who follow you but you don't follow back
+  %p
+    Green circles are users who you follow but who don't follow you back

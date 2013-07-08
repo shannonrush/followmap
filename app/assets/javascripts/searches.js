@@ -43,6 +43,7 @@ function equi() {
 	$("#search_submit").click(function() {
 		svg.selectAll('circle').remove();
 		svg.selectAll('line').remove();
+		$('#main_message').html("Finding "+$("#search_field").val()+"...");
 		search_user(projection,svg);
 	});
 }
@@ -58,6 +59,12 @@ function search_user(projection,svg) {
 }
 
 function load_map(json,projection,svg) {
+	if (!(json.user.lat)) {
+		$("#optional_message").html("(We couldn't find "+json.user.username+" so we're assuming they're in Paris. Lucky!)");
+		json.user.lat = "48.8742";
+		json.user.lng = "2.3470";
+	}
+	$("#main_message").html("Finding "+json.user.username+"'s followers...");
 	var user_coords = projection([json.user.lng, json.user.lat]); 
 	load_search_user(user_coords,projection,svg);
 	load_users(user_coords,json.reciprocal,projection,svg,'white');
@@ -65,6 +72,8 @@ function load_map(json,projection,svg) {
 	load_users(user_coords,json.friends,projection,svg,'#228A4C');
 	$(document).ajaxStop(function () {
 		svg.selectAll("line").remove();
+		$("#main_message").html("");
+		$("#user_location").html("");
 	});
 }
 
@@ -83,6 +92,7 @@ function load_users(user_coords,users,projection,svg,color) {
 		  data: { location:user.location }
 		}).done(function(json) {
 			if (json.lat) {
+				$("#user_location").html(user.location);
 				var coords = projection([json.lng, json.lat]);
 				svg.append('circle')
 				.attr('cx', coords[0])
